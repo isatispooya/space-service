@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'user'
 ]
 
 MIDDLEWARE = [
@@ -70,19 +72,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'IsatisSpace.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -127,12 +116,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'IsatisSpace',
-        'CLIENT': {
-            'host': 'localhost', 
-            'port': 27017, 
-            'username': 'mahya', 
-            'password': '123456',  
-            'authSource': 'admin',  
-        },
+        'ENFORCE_SCHEMA': False,
+
     },
 }
