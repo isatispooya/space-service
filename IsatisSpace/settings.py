@@ -116,6 +116,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'IsatisSpace',
+        'HOST': 'localhost', #localhost',
+        'PORT': 27017,
         'ENFORCE_SCHEMA': False,
 
     },
