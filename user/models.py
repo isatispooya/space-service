@@ -25,8 +25,8 @@ class User(models.Model):
     marital => وضعیت تاهل
     
     '''
-    first_name: models.CharField(max_length=255) #نام
-    last_name: models.CharField(max_length=255, null=True, blank=True) #نام خانوادگی
+    first_name= models.CharField(max_length=255) #نام
+    last_name= models.CharField(max_length=255, null=True, blank=True) #نام خانوادگی
     national_code = models.CharField(max_length=11, unique=True) #کد ملی یا شناسه ملی شرکت
     is_person = models.BooleanField(default=True) # حقیق است
     issue = models.CharField(max_length=75,null=True, blank=True) # محل صدور
@@ -48,3 +48,11 @@ class User(models.Model):
     marital = models.BooleanField(default=False)
     
 
+
+
+class Otp (models.Model) :
+    '''
+    '''
+    mobile = models.CharField(max_length=11)
+    code = models.IntegerField()
+    date = models.DateTimeField(auto_now_add=True)

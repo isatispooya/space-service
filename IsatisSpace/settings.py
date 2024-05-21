@@ -25,7 +25,14 @@ SECRET_KEY = 'django-insecure-7(iivf3b!73rx1r1t!(y8i4gz*edb72ppqgc3604s*v&+g$1&j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'user'
+    'user',
+
 ]
 
 MIDDLEWARE = [
@@ -118,7 +126,9 @@ DATABASES = {
         'NAME': 'IsatisSpace',
         'HOST': 'localhost', #localhost',
         'PORT': 27017,
-        'ENFORCE_SCHEMA': False,
+        # 'ENFORCE_SCHEMA': False,
 
     },
 }
+
+
