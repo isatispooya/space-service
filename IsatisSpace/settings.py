@@ -26,14 +26,40 @@ SECRET_KEY = 'django-insecure-7(iivf3b!73rx1r1t!(y8i4gz*edb72ppqgc3604s*v&+g$1&j
 DEBUG = True
 
 
-CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CORS_ALLOW_ALL_ORIGINS = True
+
+# یا اگر می‌خواهید دامنه‌های خاصی را مجاز کنید:
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+#     "http://192.168.39.100:8000",
+# ]
+
+CORS_ALLOW_CREDENTIALS = True  # در صورت نیاز
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -46,10 +72,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'user',
-
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,6 +85,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'IsatisSpace.urls'
 
@@ -78,7 +106,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'IsatisSpace.wsgi.application'
-
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -127,8 +154,5 @@ DATABASES = {
         'HOST': 'localhost', #localhost',
         'PORT': 27017,
         # 'ENFORCE_SCHEMA': False,
-
     },
 }
-
-
