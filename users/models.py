@@ -31,6 +31,7 @@ class ClientUser(AbstractUser):
     last_name = models.CharField(max_length=255, null=True, blank=True)
     national_code = models.CharField(max_length=11, unique=True)
     is_person = models.BooleanField(default=True)
+    working = models.CharField(max_length=250)
     issue = models.CharField(max_length=75, null=True, blank=True)
     email = models.EmailField(unique=True, null=True, blank=True)
     password = models.CharField(max_length=800)
@@ -65,7 +66,39 @@ class ClientUser(AbstractUser):
 
 class Otp (models.Model) :
     '''
+    mobile => شماره همراه
+    code => کد 
+    date => زمان
     '''
     mobile = models.CharField(max_length=11)
     code = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
+
+
+
+
+
+
+class Company (models.Model) :
+    '''
+    name => نام شرکت
+    national_id => شناسه ملی  
+    address => آدرس 
+    telephone => تلفن
+    registration_number => شماره ثبت
+    website => وبسایت
+    Logo => لوگو 
+    symbol => نماد
+    register_fund => سرمایه ثبتی
+
+    '''
+
+    name = models.CharField(max_length=250)
+    national_id = models.IntegerField()
+    address  = models.CharField(max_length=1000)
+    telephone = models.CharField(max_length=20)
+    registration_number = models.IntegerField()
+    website = models.CharField()
+    Logo = models.ImageField (upload_to='static/images/' , blank=True, null=True)
+    symbol = models.CharField(max_length=250)
+    register_fund = models.IntegerField()
