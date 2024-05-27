@@ -102,6 +102,10 @@ class Company (models.Model) :
     
     
 class PositionGroup(models.Model):
+    '''
+    name => نام گروه شغلی
+    level => سطح یا ارشدیت گروه شغلی
+    '''
     name = models.CharField(max_length=100)
     level = models.IntegerField()
     def __str__(self):
@@ -109,6 +113,10 @@ class PositionGroup(models.Model):
     
     
 class Position(models.Model):
+    '''
+    name => شغل / سمت
+    group => گروه شغلی
+    '''
     name = models.CharField(max_length=64)
     group = models.ForeignKey(PositionGroup, on_delete=models.CASCADE)
     def __str__(self):
@@ -119,6 +127,12 @@ class Position(models.Model):
 
     
 class EmployeePosition(models.Model):
+    '''
+    تعریف پرسنل بر اساس شرکت و شغل و شخص 
+    user => ClientUserاطلاعات مرتبط با 
+    company => Companyاطلاعات مرتبط با 
+    position => Positionاطلاعات مرتبط با 
+    '''
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
