@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import Otp
+from .models import Otp, Company, PositionGroup, Position, EmployeePosition
 
 User = get_user_model()
 
@@ -36,3 +36,7 @@ class CustomUserAdmin(DefaultUserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Otp)
+admin.site.register(Company)
+admin.site.register(PositionGroup)
+admin.site.register(Position)
+admin.site.register(EmployeePosition)

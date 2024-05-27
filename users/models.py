@@ -31,12 +31,11 @@ class ClientUser(AbstractUser):
     last_name = models.CharField(max_length=255, null=True, blank=True)
     national_code = models.CharField(max_length=11, unique=True)
     is_person = models.BooleanField(default=True)
-    working = models.CharField(max_length=250)
     issue = models.CharField(max_length=75, null=True, blank=True)
     email = models.EmailField(unique=True, null=True, blank=True)
     password = models.CharField(max_length=800)
     status = models.BooleanField(default=True)
-    create_at = models.DateTimeField(default=timezone.now())
+    create_at = models.DateTimeField(default=timezone.now)
     expiration = models.DateTimeField(default=timezone.now() + timezone.timedelta(days=180))
     mobile = models.CharField(max_length=11, validators=[RegexValidator(r'^\d{11}$', message='شماره همراه صحیح نیست')], unique=True)
     phone = models.CharField(max_length=11, validators=[RegexValidator(r'^\d{11}$', message='شماره ثابت صحیح نیست')], null=True, blank=True)
@@ -74,11 +73,6 @@ class Otp (models.Model) :
     code = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
 
-
-
-
-
-
 class Company (models.Model) :
     '''
     name => نام شرکت
@@ -89,7 +83,7 @@ class Company (models.Model) :
     website => وبسایت
     Logo => لوگو 
     symbol => نماد
-    register_fund => سرمایه ثبتی
+    register_capital => سرمایه ثبتی
 
     '''
 
@@ -98,7 +92,38 @@ class Company (models.Model) :
     address  = models.CharField(max_length=1000)
     telephone = models.CharField(max_length=20)
     registration_number = models.IntegerField()
-    website = models.CharField()
+    website = models.CharField(max_length=800)
     Logo = models.ImageField (upload_to='static/images/' , blank=True, null=True)
     symbol = models.CharField(max_length=250)
-    register_fund = models.IntegerField()
+    register_capital = models.IntegerField()
+    def __str__(self):
+        return f'{self.name}'
+    
+    
+    
+class PositionGroup(models.Model):
+    name = models.CharField(max_length=100)
+    level = models.IntegerField()
+    def __str__(self):
+        return f'{self.name} {self.level}'
+    
+    
+class Position(models.Model):
+    name = models.CharField(max_length=64)
+    group = models.ForeignKey(PositionGroup, on_delete=models.CASCADE)
+    def __str__(self):
+        return f'{self.name} {self.group}'
+
+
+
+
+    
+class EmployeePosition(models.Model):
+    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    position = models.ForeignKey(Position, on_delete=models.CASCADE)
+    def __str__(self):
+        return f'{self.user} {self.position} {self.company}'
+    
+    
+    
