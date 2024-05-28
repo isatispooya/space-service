@@ -181,9 +181,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'space',
         'USER': 'postgres',
-        'PASSWORD': '123!@#',
+        'PASSWORD': 'isatis-1403',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
+# settings.py
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60*12),  # مدت زمان انقضاء توکن دسترسی
+}
