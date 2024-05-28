@@ -2,6 +2,8 @@
 from rest_framework import serializers
 from . import models  # جایگزین YourModel با مدل مورد نظر خود شوید
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
+
 
 User = get_user_model()
 
@@ -16,3 +18,72 @@ class OtpModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Otp
         fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
+# class PositionGroupModelSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.PositionGroup
+#         fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
+class CompanyModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Company
+        fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
+# class PositionModelSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.Position
+#         fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
+# class EmployeePositionModelSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.EmployeePosition
+#         fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
+
+
+class PositionGroupModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PositionGroup
+        fields = '__all__'
+
+class PositionModelSerializer(serializers.ModelSerializer):
+    group = PositionGroupModelSerializer()
+    
+    class Meta:
+        model = models.Position
+        fields = '__all__'
+
+class ClientUserModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ClientUser
+        fields = '__all__'
+
+class EmployeePositionModelSerializer(serializers.ModelSerializer):
+    user = models.ClientUser()
+    position = PositionModelSerializer()
+    
+    class Meta:
+        model = models.EmployeePosition
+        fields = '__all__'
+
+class CompanyWithEmployeesSerializer(serializers.ModelSerializer):
+    employees = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Company
+        fields = '__all__'
+    
+    def get_employees(self, obj):
+        employees = models.EmployeePosition.objects.filter(company=obj)
+        return EmployeePositionModelSerializer(employees, many=True).data
+
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Customer
+        fields = '__all__'
+
+
+class ShareholderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Shareholder
+        fields = '__all__'
+
+
+

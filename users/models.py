@@ -63,6 +63,7 @@ class ClientUser(AbstractUser):
         verbose_name='user permissions'
     )
 
+
 class Otp (models.Model) :
     '''
     mobile => شماره همراه
@@ -122,10 +123,6 @@ class Position(models.Model):
     def __str__(self):
         return f'{self.name} {self.group}'
 
-
-
-
-    
 class EmployeePosition(models.Model):
     '''
     تعریف پرسنل بر اساس شرکت و شغل و شخص 
@@ -136,6 +133,27 @@ class EmployeePosition(models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
+
     def __str__(self):
         return f'{self.user} {self.position} {self.company}'
     
+
+class Shareholder (models.Model):
+    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
+    def __str__(self):
+        return f'{self.user} {self.company}'
+
+
+class Customer (models.Model) :
+    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    create_at = models.DateTimeField(default=timezone.now) 
+
+    def __str__(self):
+        return f'{self.user} {self.company}'
+
+    class Meta:
+        # تعیین کلید یکتا برای ترکیب user و company
+        unique_together = ('user', 'company')
