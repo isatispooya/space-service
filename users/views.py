@@ -163,3 +163,13 @@ class ClientUserCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
+    def get(self, request, format=None):
+        username = request.data.get('username')
+        # username = request.query_params.get('username')
+        if username:
+            client_user = models.ClientUser.objects.filter(username=username)
+        else:
+            client_user = models.ClientUser.objects.all()
+        
+        serializer = serializers.ClientUserModelSerializer(client_user, many=True)
+        return Response(serializer.data)

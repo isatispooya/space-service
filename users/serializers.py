@@ -102,4 +102,6 @@ class ShareholderSerializer(serializers.ModelSerializer):
         class Meta:
             model = models.ClientUser
             fields = '__all__'
-            
+    def get_user_detail(self, obj):
+        user = obj.user
+        return UserSerializer(user).data
