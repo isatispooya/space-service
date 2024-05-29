@@ -141,9 +141,10 @@ class EmployeePosition(models.Model):
 class Shareholder (models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    amount = models.IntegerField(default=0)
+    amount = models.PositiveIntegerField(default=0)
     def __str__(self):
         return f'{self.user} {self.company}'
+
 
 
 class Customer (models.Model) :

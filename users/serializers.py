@@ -80,10 +80,19 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ShareholderSerializer(serializers.ModelSerializer):
+class ShareholderSerializer(serializers.ModelSerializer):   
+    user_detail = serializers.SerializerMethodField()
+    company_detail = serializers.SerializerMethodField()
+
     class Meta:
         model = models.Shareholder
         fields = '__all__'
 
+    def get_user_detail(self, obj):
+        user = obj.user
+        return UserSerializer(user).data
 
 
+    def get_company_detail(self, obj):
+        company = obj.company
+        return CompanyModelSerializer(company).data
