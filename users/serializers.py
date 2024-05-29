@@ -82,7 +82,6 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 class ShareholderSerializer(serializers.ModelSerializer):   
     user_detail = serializers.SerializerMethodField()
-    company_detail = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Shareholder
@@ -96,3 +95,11 @@ class ShareholderSerializer(serializers.ModelSerializer):
     def get_company_detail(self, obj):
         company = obj.company
         return CompanyModelSerializer(company).data
+    
+
+
+    class ClientUserSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = models.ClientUser
+            fields = '__all__'
+            

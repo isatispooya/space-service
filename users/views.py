@@ -141,15 +141,25 @@ class ShareholderViewset(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, format=None):
-        Shareholder = models.Shareholder.objects.all()
-        serializer = serializers.ShareholderSerializer(Shareholder, many=True)
+        company_id = request.data.get('company')
+        if company_id:
+            shareholders = models.Shareholder.objects.filter(company_id=company_id)
+        else:
+            shareholders = models.Shareholder.objects.all()
+        
+        serializer = serializers.ShareholderSerializer (shareholders, many=True)
         return Response(serializer.data)
     
 
 
+class ClientUserCreateView(APIView):
+    queryset = ClientUser.objects.all()
 
-
-
-
-
+    def post(self, request, format=None):
+        serializer = serializers.ClientUserModelSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 

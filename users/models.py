@@ -27,6 +27,7 @@ class ClientUser(AbstractUser):
     marital => وضعیت تاهل
     
     '''
+    username= models.CharField(max_length=100,  unique=True )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, null=True, blank=True)
     national_code = models.CharField(max_length=11, unique=True)

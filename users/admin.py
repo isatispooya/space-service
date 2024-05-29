@@ -42,5 +42,3 @@ admin.site.register(Position)
 admin.site.register(EmployeePosition)
 admin.site.register(Customer)
 admin.site.register(Shareholder)
-
-
