@@ -87,6 +87,14 @@ class LoginViewset (APIView) :
         }, status=status.HTTP_200_OK)
     
 class CompaniesViewset(APIView) :
+
+    def post(self, request, format=None):
+        serializer = serializers.CompanyModelSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     def get (self , request) :
         companies = models.Company.objects.all()
         companies = serializers.CompanyModelSerializer(companies , many = True)
@@ -152,7 +160,7 @@ class ShareholderViewset(APIView):
     
 
 
-class ClientUserCreateView(APIView):
+class ClientUserViewset(APIView):
     queryset = ClientUser.objects.all()
 
     def post(self, request, format=None):
@@ -173,3 +181,20 @@ class ClientUserCreateView(APIView):
         
         serializer = serializers.ClientUserModelSerializer(client_user, many=True)
         return Response(serializer.data)
+    
+
+class ClientUserWithNationalCodeViewset (APIView) :
+    queryset = ClientUser.objects.all()
+
+    def get (self , request , format=None) :
+        national_code = request.data.get('national_code')
+        if national_code :
+            client_user = models.ClientUser.objects.filter (national_code=national_code)
+        else :
+            client_user = models.ClientUser.objects.all()
+        serializer = serializers.ClientUserModelSerializer(client_user, many=True)
+        return Response(serializer.data)
+ 
+
+
+ 

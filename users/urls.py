@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CaptchaViewset, OtpViewset,LoginViewset,CompaniesViewset,CompanyWithEmployeesViewset, CustomerViewset, ShareholderViewset,ClientUserCreateView
+from .views import CaptchaViewset, OtpViewset,LoginViewset,CompaniesViewset,CompanyWithEmployeesViewset, CustomerViewset, ShareholderViewset,ClientUserViewset, ClientUserWithNationalCodeViewset
 
 
 urlpatterns = [
@@ -10,5 +10,7 @@ urlpatterns = [
     path('companieswithemployees/', CompanyWithEmployeesViewset.as_view(), name='companieswithemployees'),
     path('customer/', CustomerViewset.as_view(), name='customer'),
     path('shareholder/', ShareholderViewset.as_view(), name='shareholder'),
-    path('user/', ClientUserCreateView.as_view(), name='user'),
+    path('user/', ClientUserViewset.as_view(), name='user'),
+    path('usernationalcode/',ClientUserWithNationalCodeViewset.as_view(), name='usernationalcode'),
+    
 ]

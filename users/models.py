@@ -35,11 +35,14 @@ class ClientUser(AbstractUser):
     issue = models.CharField(max_length=75, null=True, blank=True)
     email = models.EmailField(unique=True, null=True, blank=True)
     password = models.CharField(max_length=800)
+    father = models.CharField(max_length=150 ,null=True, blank=True)
+    bours_code = models.CharField(max_length=20 ,null=True, blank=True)
     status = models.BooleanField(default=True)
     create_at = models.DateTimeField(default=timezone.now)
     expiration = models.DateTimeField(default=timezone.now() + timezone.timedelta(days=180))
     mobile = models.CharField(max_length=11, validators=[RegexValidator(r'^\d{11}$', message='شماره همراه صحیح نیست')], unique=True)
     phone = models.CharField(max_length=11, validators=[RegexValidator(r'^\d{11}$', message='شماره ثابت صحیح نیست')], null=True, blank=True)
+    internal_number = models.CharField(max_length=11,null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     profile_picture = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     date_birth = models.DateField(null=True, blank=True)
@@ -48,7 +51,7 @@ class ClientUser(AbstractUser):
     date_last_act = models.DateTimeField(default=timezone.now)
     card_number_bank = models.CharField(max_length=16, null=True, blank=True)
     shaba_bank = models.CharField(max_length=26, null=True, blank=True)
-    marital = models.BooleanField(default=False)
+    marital = models.BooleanField(default=False , null=True, blank=True)
     groups = models.ManyToManyField(
         Group,
         related_name='custom_user_groups',
@@ -90,14 +93,14 @@ class Company (models.Model) :
     '''
 
     name = models.CharField(max_length=250)
-    national_id = models.IntegerField()
+    national_id = models.BigIntegerField()
     address  = models.CharField(max_length=1000)
     telephone = models.CharField(max_length=20)
     registration_number = models.IntegerField()
     website = models.CharField(max_length=800)
-    Logo = models.ImageField (upload_to='static/images/' , blank=True, null=True)
+    Logo = models.ImageField (upload_to='IsatisSpace/static/images/' , blank=True, null=True)
     symbol = models.CharField(max_length=250)
-    register_capital = models.IntegerField()
+    register_capital = models.BigIntegerField()
     def __str__(self):
         return f'{self.name}'
     
