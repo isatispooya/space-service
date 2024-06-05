@@ -22,8 +22,9 @@ class CaptchaViewset(APIView):
 class OtpViewset(APIView):
     def post(self,request):
         captchas = GuardPyCaptcha()
+        print(request.data)
         captchas = captchas.check_response(request.data['encrypted_response'],request.data['captcha'])
-        if captchas : 
+        if not captchas : 
             result= {'message': 'کد کپچا صحیح نیست'}
             return Response(result,status=status.HTTP_406_NOT_ACCEPTABLE)
         mobile = request.data['mobile']
@@ -34,7 +35,7 @@ class OtpViewset(APIView):
             return Response(result,status=status.HTTP_404_NOT_FOUND)
         serialized_user = UserSerializer(user)
 
-        code =random.randint(10000,99999)
+        code = 11111 #random.randint(10000,99999)
         otp = Otp(mobile=mobile,code =code)
         otp.save()
 
@@ -86,8 +87,8 @@ class LoginViewset (APIView) :
             'access': str(refresh.access_token),
         }, status=status.HTTP_200_OK)
     
+    
 class CompaniesViewset(APIView) :
-
     def post(self, request, format=None):
         serializer = serializers.CompanyModelSerializer(data=request.data)
         if serializer.is_valid():
