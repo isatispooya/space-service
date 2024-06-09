@@ -5,8 +5,27 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class Userpermissions (models.Model) :
-    endpoint = models.CharField(max_length=150)
+    endpoint = models.CharField(max_length=150, unique=True)
+
+    def __str__(self):
+        return self.endpoint
+
+
+class Groups (models.Model):
+    name = models.CharField(max_length=100 , unique=True)
+    endpoint = models.ManyToManyField(
+        Userpermissions,
+        related_name='custom_groups',
+        blank=True,
+        help_text='Specific groups for this user.',
+        verbose_name='groups'
+    )
+
+    def __str__(self):
+        return self.name
     
+
+
 class ClientUser(AbstractUser):
     '''
     first_name => نام برای حقیقی و نام کامل برای حقوقی
@@ -55,7 +74,13 @@ class ClientUser(AbstractUser):
     card_number_bank = models.CharField(max_length=16, null=True, blank=True)
     shaba_bank = models.CharField(max_length=26, null=True, blank=True)
     marital = models.BooleanField(default=False , null=True, blank=True)
-
+    groups = models.ManyToManyField(
+        Groups ,
+        related_name='custom_groups',
+        blank=True,
+        help_text='Specific groups for this user.',
+        verbose_name='groups')
+    
     user_permissions = models.ManyToManyField(
         Userpermissions,
         related_name='custom_user_permissions',
@@ -159,10 +184,6 @@ class Customer (models.Model) :
     class Meta:
         # تعیین کلید یکتا برای ترکیب user و company
         unique_together = ('user', 'company')
-
-
-
-
 
 
 

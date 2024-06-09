@@ -12,7 +12,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.urls import get_resolver
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
-
 class CaptchaViewset(APIView):
     def get(self, request):
         captchas = GuardPyCaptcha()
@@ -204,9 +203,78 @@ class ClientUserWithNationalCodeViewset (APIView) :
         return Response(serializer.data)
     
 
-class Geturls (APIView) :
-    def get (self , request) :
-        resolver = get_resolver()
-        url_names = [pattern.name for pattern in resolver.url_patterns if pattern.name]
-        return JsonResponse({'url_names': url_names})
+
+
+class PermissionsViewset (APIView) :
+    def post (self, request) :
+        try :
+            endpoint = request.data.get('endpoint')
+            userpermissions = models.Userpermissions(endpoint=endpoint)
+            userpermissions.save ()
+            return JsonResponse ({'urls_names' : endpoint})
+        except :
+            return JsonResponse ({'message' : '400'})
+        
+    def get (self,request) :
+        endpoint = request.data.get('endpoint')
+        if endpoint:
+            client_user = models.Userpermissions.objects.filter(endpoint=endpoint)
+        else:
+            client_user = models.Userpermissions.objects.all()
+                
+        serializer = serializers.PermissionsSerializer(client_user, many=True)
+        return Response(serializer.data)
+     
+
+
+ 
+class GroupsViewset (APIView) :
+    def post (self , request) :
+        serializer = serializers.GroupsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
+
+
+
+
+
+class GroupsViewset(APIView):
+    def post(self, request):
+        data = request.data
+        endpoints = data.get('endpoint', [])
+        if not endpoints:
+            return Response({'endpoint': 'This field is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = serializers.GroupsSerializer(data=data)
+        if serializer.is_valid():
+            group = serializer.save()
+            group.endpoint.set(endpoints)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get (self,request) :
+        endpoint = request.data.get('endpoint')
+        if endpoint:
+            client_user = models.Groups.objects.filter(endpoint=endpoint)
+        else:
+            client_user = models.Groups.objects.all()
+                
+        serializer = serializers.GroupsSerializer(client_user, many=True)
+        return Response(serializer.data)
+    
+    def delete(self, request):
+        try:
+            group = models.Groups.objects.all()
+            group.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except models.Groups.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+
 

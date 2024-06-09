@@ -41,6 +41,25 @@ class PositionGroupModelSerializer(serializers.ModelSerializer):
         model = models.PositionGroup
         fields = '__all__'
 
+
+
+class PermissionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Userpermissions
+        fields = '__all__'
+
+
+
+class GroupsSerializer(serializers.ModelSerializer):
+    endpoint = serializers.PrimaryKeyRelatedField(queryset=models.Userpermissions.objects.all(), many=True)
+
+    class Meta:
+        model = models.Groups
+        fields = ['name', 'endpoint']
+
+
+
+
 class PositionModelSerializer(serializers.ModelSerializer):
     group = PositionGroupModelSerializer()
     
