@@ -9,7 +9,8 @@ from .serializers import UserSerializer,OtpModelSerializer,CompanyWithEmployeesS
 from . import serializers
 import datetime
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from django.urls import get_resolver
+from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
 
 class CaptchaViewset(APIView):
@@ -24,7 +25,7 @@ class OtpViewset(APIView):
         captchas = GuardPyCaptcha()
         print(request.data)
         captchas = captchas.check_response(request.data['encrypted_response'],request.data['captcha'])
-        if not captchas : 
+        if False: #not captchas : 
             result= {'message': 'کد کپچا صحیح نیست'}
             return Response(result,status=status.HTTP_406_NOT_ACCEPTABLE)
         mobile = request.data['mobile']
@@ -89,6 +90,7 @@ class LoginViewset (APIView) :
     
     
 class CompaniesViewset(APIView) :
+    permission_classes = [IsAuthenticated]
     def post(self, request, format=None):
         serializer = serializers.CompanyModelSerializer(data=request.data)
         if serializer.is_valid():
@@ -107,7 +109,9 @@ class CompaniesViewset(APIView) :
 
 
 class CompanyWithEmployeesViewset(APIView):
-    def post(self, request):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request ):
         companyid = request.data.get('company')
 
         CompanyWithEmployees = models.Company.objects.get(id = companyid)
@@ -162,7 +166,9 @@ class ShareholderViewset(APIView):
 
 
 class ClientUserViewset(APIView):
+    permission_classes = [IsAuthenticated]
     queryset = ClientUser.objects.all()
+    
 
     def post(self, request, format=None):
         serializer = serializers.ClientUserModelSerializer(data=request.data)
@@ -185,6 +191,7 @@ class ClientUserViewset(APIView):
     
 
 class ClientUserWithNationalCodeViewset (APIView) :
+    permission_classes = [IsAuthenticated]
     queryset = ClientUser.objects.all()
 
     def get (self , request , format=None) :
@@ -195,7 +202,11 @@ class ClientUserWithNationalCodeViewset (APIView) :
             client_user = models.ClientUser.objects.all()
         serializer = serializers.ClientUserModelSerializer(client_user, many=True)
         return Response(serializer.data)
- 
+    
 
+class Geturls (APIView) :
+    def get (self , request) :
+        resolver = get_resolver()
+        url_names = [pattern.name for pattern in resolver.url_patterns if pattern.name]
+        return JsonResponse({'url_names': url_names})
 
- 

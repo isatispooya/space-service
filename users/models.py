@@ -4,6 +4,9 @@ from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
+class Userpermissions (models.Model) :
+    endpoint = models.CharField(max_length=150)
+    
 class ClientUser(AbstractUser):
     '''
     first_name => نام برای حقیقی و نام کامل برای حقوقی
@@ -52,15 +55,9 @@ class ClientUser(AbstractUser):
     card_number_bank = models.CharField(max_length=16, null=True, blank=True)
     shaba_bank = models.CharField(max_length=26, null=True, blank=True)
     marital = models.BooleanField(default=False , null=True, blank=True)
-    groups = models.ManyToManyField(
-        Group,
-        related_name='custom_user_groups',
-        blank=True,
-        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
-        verbose_name='groups'
-    )
+
     user_permissions = models.ManyToManyField(
-        Permission,
+        Userpermissions,
         related_name='custom_user_permissions',
         blank=True,
         help_text='Specific permissions for this user.',
@@ -162,3 +159,13 @@ class Customer (models.Model) :
     class Meta:
         # تعیین کلید یکتا برای ترکیب user و company
         unique_together = ('user', 'company')
+
+
+
+
+
+
+
+    
+
+    
