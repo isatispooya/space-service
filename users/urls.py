@@ -22,7 +22,7 @@ urlpatterns = [
     path('permission/<int:pk>/',PermissionDetailView.as_view(), name='permission'),
     path('groups/',GroupsListCreateView.as_view(), name='groups'),
     path('groups/<int:pk>/',GroupsDetailView.as_view(), name='groups'),
-    path('shareholderstransactions/',ShareholderListCreateView.as_view(), name='shareholderstransactions'),
+    path('shareholderstransactions/',ShareholdersTransactionsListCreateView.as_view(), name='shareholderstransactions'),
     path('shareholderstransactions/<int:pk>/',ShareholdersTransactionsDetailView.as_view(), name='shareholderstransactions'),
 
 ]
