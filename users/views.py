@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status , generics
 from GuardPyCaptcha.Captch import GuardPyCaptcha
 from .models import ClientUser,Otp
 from . import models
@@ -12,6 +12,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.urls import get_resolver
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+
+
+
+
 class CaptchaViewset(APIView):
     def get(self, request):
         captchas = GuardPyCaptcha()
@@ -88,192 +93,122 @@ class LoginViewset (APIView) :
         }, status=status.HTTP_200_OK)
     
     
-class CompaniesViewset(APIView) :
-    permission_classes = [IsAuthenticated]
-    def post(self, request, format=None):
-        serializer = serializers.CompanyModelSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def get (self , request) :
-        companies = models.Company.objects.all()
-        companies = serializers.CompanyModelSerializer(companies , many = True)
-        print (companies.data)
-        return Response (companies.data,status=status.HTTP_200_OK)
 
-
-
-
-
-class CompanyWithEmployeesViewset(APIView):
+# companies
+class CompaniesListCreateView(generics.ListCreateAPIView):
+    queryset = models.Company.objects.all()
+    serializer_class = serializers.CompanySerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self, request ):
-        companyid = request.data.get('company')
-
-        CompanyWithEmployees = models.Company.objects.get(id = companyid)
-        CompanyWithEmployees = CompanyWithEmployeesSerializer(CompanyWithEmployees)
-        return Response(CompanyWithEmployees.data, status=status.HTTP_200_OK)
-    
-
-
-
-
-
-class CustomerViewset(APIView):
+# companies
+class CompanyDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Company.objects.all()
+    serializer_class = serializers.CompanySerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
-        serializer = serializers.CustomerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# employeeposition
+class EmployeePositionListCreateView(generics.ListCreateAPIView):
+    queryset = models.EmployeePosition.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.EmployeePositionModelSerializer
 
-    def get(self, request, format=None):
-        customers = models.Customer.objects.all()
-        serializer = serializers.CustomerSerializer(customers, many=True)
-        return Response(serializer.data)
-    
-
-
-
-
-
-class ShareholderViewset(APIView):
+# employeeposition
+class EmployeePositionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.EmployeePosition.objects.all()
+    serializer_class = serializers.EmployeePositionModelSerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
-        serializer = serializers.ShareholderSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def get(self, request, format=None):
-        company_id = request.data.get('company')
-        if company_id:
-            shareholders = models.Shareholder.objects.filter(company_id=company_id)
-        else:
-            shareholders = models.Shareholder.objects.all()
-        
-        serializer = serializers.ShareholderSerializer (shareholders, many=True)
-        return Response(serializer.data)
-    
-
-
-class ClientUserViewset(APIView):
+# customer
+class CustomerListCreateView(generics.ListCreateAPIView):
+    queryset = models.Customer.objects.all()
+    serializer_class = serializers.CustomerSerializer
     permission_classes = [IsAuthenticated]
-    queryset = ClientUser.objects.all()
-    
 
-    def post(self, request, format=None):
-        serializer = serializers.ClientUserModelSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
-    def get(self, request, format=None):
-        username = request.data.get('username')
-        # username = request.query_params.get('username')
-        if username:
-            client_user = models.ClientUser.objects.filter(username=username)
-        else:
-            client_user = models.ClientUser.objects.all()
-        
-        serializer = serializers.ClientUserModelSerializer(client_user, many=True)
-        return Response(serializer.data)
-    
-
-class ClientUserWithNationalCodeViewset (APIView) :
+# customer
+class CustomerDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Customer.objects.all()
+    serializer_class = serializers.CustomerSerializer
     permission_classes = [IsAuthenticated]
-    queryset = ClientUser.objects.all()
 
-    def get (self , request , format=None) :
-        national_code = request.data.get('national_code')
-        if national_code :
-            client_user = models.ClientUser.objects.filter (national_code=national_code)
-        else :
-            client_user = models.ClientUser.objects.all()
-        serializer = serializers.ClientUserModelSerializer(client_user, many=True)
-        return Response(serializer.data)
-    
+# shareholder
+class ShareholderListCreateView(generics.ListCreateAPIView):
+    queryset = models.Shareholder.objects.all()
+    serializer_class = serializers.ShareholderSerializer
+    permission_classes = [IsAuthenticated]
+
+# shareholder
+class ShareholderDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Shareholder.objects.all()
+    serializer_class = serializers.ShareholderSerializer
+    permission_classes = [IsAuthenticated]
+
+# position
+class PositionListCreateView(generics.ListCreateAPIView):
+    queryset = models.Position.objects.all()
+    serializer_class = serializers.PositionModelSerializer
+    permission_classes = [IsAuthenticated]
+
+# positiongroup
+class PositionGroupListCreateView(generics.ListCreateAPIView):
+    queryset = models.PositionGroup.objects.all()
+    serializer_class = serializers.PositionGroupModelSerializer
+    permission_classes = [IsAuthenticated]
+
+# clientuser
+class ClientUserListCreateView(generics.ListCreateAPIView):
+    queryset = models.ClientUser.objects.all()
+    serializer_class = serializers.ClientUserModelSerializer
+    permission_classes = [IsAuthenticated]
+
+# clientuser
+class ClientUserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.ClientUser.objects.all()
+    serializer_class = serializers.ClientUserModelSerializer
+    permission_classes = [IsAuthenticated]
+
+
+# premission
+class PermissionListCreateView(generics.ListCreateAPIView):
+    queryset = models.Userpermissions.objects.all()
+    serializer_class = serializers.PermissionsSerializer
+    permission_classes = [IsAuthenticated]
+
+# premission
+class PermissionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Userpermissions.objects.all()
+    serializer_class = serializers.PermissionsSerializer
+    permission_classes = [IsAuthenticated]
+
+# group
+class GroupsListCreateView(generics.ListCreateAPIView):
+    queryset = models.Groups.objects.all()
+    serializer_class = serializers.GroupsSerializer
+    permission_classes = [IsAuthenticated]
+
+# group
+class GroupsDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Groups.objects.all()
+    serializer_class = serializers.GroupsSerializer
+    permission_classes = [IsAuthenticated]
 
 
 
-class PermissionsViewset (APIView) :
-    def post (self, request) :
-        try :
-            endpoint = request.data.get('endpoint')
-            userpermissions = models.Userpermissions(endpoint=endpoint)
-            userpermissions.save ()
-            return JsonResponse ({'urls_names' : endpoint})
-        except :
-            return JsonResponse ({'message' : '400'})
-        
-    def get (self,request) :
-        endpoint = request.data.get('endpoint')
-        if endpoint:
-            client_user = models.Userpermissions.objects.filter(endpoint=endpoint)
-        else:
-            client_user = models.Userpermissions.objects.all()
-                
-        serializer = serializers.PermissionsSerializer(client_user, many=True)
-        return Response(serializer.data)
-     
+# The priority of shareholders' transactions    اولویت معامله سهامدارن
+class ShareholdersTransactionsListCreateView(generics.ListCreateAPIView):
+    queryset = models.ShareholdersTransactions.objects.all()
+    serializer_class = serializers.ShareholdersTransactionsSerializer
+    permission_classes = [IsAuthenticated]
+
+# The priority of shareholders' transactions    اولویت معامله سهامدارن
+class ShareholdersTransactionsDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.ShareholdersTransactions.objects.all()
+    serializer_class = serializers.ShareholdersTransactionsSerializer
+    permission_classes = [IsAuthenticated]
+
 
 
  
-class GroupsViewset (APIView) :
-    def post (self , request) :
-        serializer = serializers.GroupsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-    
 
-
-
-
-
-class GroupsViewset(APIView):
-    def post(self, request):
-        data = request.data
-        endpoints = data.get('endpoint', [])
-        if not endpoints:
-            return Response({'endpoint': 'This field is required.'}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = serializers.GroupsSerializer(data=data)
-        if serializer.is_valid():
-            group = serializer.save()
-            group.endpoint.set(endpoints)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            print(serializer.errors)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def get (self,request) :
-        endpoint = request.data.get('endpoint')
-        if endpoint:
-            client_user = models.Groups.objects.filter(endpoint=endpoint)
-        else:
-            client_user = models.Groups.objects.all()
-                
-        serializer = serializers.GroupsSerializer(client_user, many=True)
-        return Response(serializer.data)
-    
-    def delete(self, request):
-        try:
-            group = models.Groups.objects.all()
-            group.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except models.Groups.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 

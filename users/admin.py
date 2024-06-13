@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import Otp, Company, PositionGroup, Position, EmployeePosition,Customer , Shareholder
+from .models import Otp, Company, PositionGroup, Position, EmployeePosition,Customer , Shareholder,Userpermissions,ShareholdersTransactions,Groups
 
 User = get_user_model()
 
@@ -42,3 +42,6 @@ admin.site.register(Position)
 admin.site.register(EmployeePosition)
 admin.site.register(Customer)
 admin.site.register(Shareholder)
+admin.site.register(Userpermissions)
+admin.site.register(Groups)
+admin.site.register(ShareholdersTransactions)

@@ -34,7 +34,7 @@ class ClientUser(AbstractUser):
     is_person => فرد حقیقی است
     issue => محل صدور
     email => ایمیل
-    password => رمزعبور
+    password => رمزعبورأ
     status => وضعیت فعال/غیرفعال
     create_at => تاریخ ایجاد
     expiration => تاریخ اعتبار فعالیت
@@ -100,6 +100,9 @@ class Otp (models.Model) :
     code = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
 
+
+
+# Company  شرکت ها 
 class Company (models.Model) :
     '''
     name => نام شرکت
@@ -127,7 +130,8 @@ class Company (models.Model) :
         return f'{self.name}'
     
     
-    
+
+# PositionGroup  گروه شغلی
 class PositionGroup(models.Model):
     '''
     name => نام گروه شغلی
@@ -137,8 +141,10 @@ class PositionGroup(models.Model):
     level = models.IntegerField()
     def __str__(self):
         return f'{self.name} {self.level}'
-    
-    
+
+
+
+# Position سمت شغلی
 class Position(models.Model):
     '''
     name => شغل / سمت
@@ -148,7 +154,10 @@ class Position(models.Model):
     group = models.ForeignKey(PositionGroup, on_delete=models.CASCADE)
     def __str__(self):
         return f'{self.name} {self.group}'
+    
 
+
+# EmployeePosition  پرسنل بر اساس شرکت و شغل 
 class EmployeePosition(models.Model):
     '''
     تعریف پرسنل بر اساس شرکت و شغل و شخص 
@@ -164,6 +173,8 @@ class EmployeePosition(models.Model):
         return f'{self.user} {self.position} {self.company}'
     
 
+
+# Shareholder سهامداران
 class Shareholder (models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
@@ -173,6 +184,7 @@ class Shareholder (models.Model):
 
 
 
+# Customer مشتریان
 class Customer (models.Model) :
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
@@ -188,5 +200,16 @@ class Customer (models.Model) :
 
 
     
+# The priority of shareholders' transactions    اولویت معامله سهامدارن
+class ShareholdersTransactions (models.Model) :
+    seller = models.ForeignKey(Shareholder,on_delete=models.CASCADE,related_name='transaction_seller')
+    buyer = models.ForeignKey(Shareholder,on_delete=models.CASCADE,related_name='transaction_buyer')
+    count = models.IntegerField()
+    amount = models.IntegerField()
+    symbol = models.ForeignKey(Company, on_delete=models.CASCADE,related_name='transaction_company')
+    datetime = models.DateTimeField(default=timezone.now)
 
-    
+    def __str__ (self) :
+        return f'{self.seller} {self.buyer} {self.amount}'
+
+  

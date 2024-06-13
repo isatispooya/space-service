@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from . import models  # جایگزین YourModel با مدل مورد نظر خود شوید
+from . import models  
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -17,30 +17,12 @@ class UserSerializer(serializers.ModelSerializer):
 class OtpModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Otp
-        fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
-# class PositionGroupModelSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = models.PositionGroup
-#         fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
-class CompanyModelSerializer(serializers.ModelSerializer):
+        fields = '__all__'  
+
+class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Company
-        fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
-# class PositionModelSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = models.Position
-#         fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
-# class EmployeePositionModelSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = models.EmployeePosition
-#         fields = '__all__'  # یا فیلدهای مورد نظرتان را به جای '__all__' قرار دهید
-
-
-class PositionGroupModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.PositionGroup
-        fields = '__all__'
-
+        fields = '__all__'   
 
 
 class PermissionsSerializer(serializers.ModelSerializer):
@@ -55,17 +37,23 @@ class GroupsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Groups
-        fields = ['name', 'endpoint']
-
-
+        fields = '__all__'
 
 
 class PositionModelSerializer(serializers.ModelSerializer):
-    group = PositionGroupModelSerializer()
+    # group = PositionGroupModelSerializer()
     
     class Meta:
         model = models.Position
         fields = '__all__'
+
+class PositionGroupModelSerializer(serializers.ModelSerializer):
+    group = PositionModelSerializer()
+
+    class Meta:
+        model = models.PositionGroup
+        fields = '__all__'
+
 
 class ClientUserModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,12 +61,26 @@ class ClientUserModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class EmployeePositionModelSerializer(serializers.ModelSerializer):
-    user = models.ClientUser()
-    position = PositionModelSerializer()
-    
+    user = serializers.PrimaryKeyRelatedField(queryset=models.ClientUser.objects.all())
+    position = serializers.PrimaryKeyRelatedField(queryset=models.Position.objects.all())
+    company = serializers.PrimaryKeyRelatedField(queryset=models.Company.objects.all())
     class Meta:
         model = models.EmployeePosition
         fields = '__all__'
+
+
+    
+
+class ShareholdersTransactionsSerializer(serializers.ModelSerializer):
+    seller = serializers.PrimaryKeyRelatedField(queryset=models.Shareholder.objects.all())
+    buyer = serializers.PrimaryKeyRelatedField(queryset=models.Shareholder.objects.all())
+    symbol = serializers.PrimaryKeyRelatedField(queryset=models.Company.objects.all())
+    class Meta:
+        model = models.ShareholdersTransactions
+        fields = '__all__'
+
+
+    
 
 class CompanyWithEmployeesSerializer(serializers.ModelSerializer):
     employees = serializers.SerializerMethodField()
@@ -113,7 +115,7 @@ class ShareholderSerializer(serializers.ModelSerializer):
 
     def get_company_detail(self, obj):
         company = obj.company
-        return CompanyModelSerializer(company).data
+        return CompanySerializer(company).data
     
 
 
@@ -124,3 +126,4 @@ class ShareholderSerializer(serializers.ModelSerializer):
     def get_user_detail(self, obj):
         user = obj.user
         return UserSerializer(user).data
+    

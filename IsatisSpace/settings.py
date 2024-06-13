@@ -183,7 +183,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'space',
         'USER': 'postgres',
-        'PASSWORD': '123!@#',
+        'PASSWORD': 'isatis-1403',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -198,3 +198,4 @@ SIMPLE_JWT = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
