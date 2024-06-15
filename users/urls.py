@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import CaptchaViewset, OtpViewset,LoginViewset,ShareholdersTransactionsListCreateView,ShareholdersTransactionsDetailView,PositionGroupListCreateView,PositionListCreateView,EmployeePositionListCreateView,EmployeePositionDetailView, CustomerListCreateView,CustomerDetailView, ShareholderListCreateView,ShareholderDetailView,ClientUserListCreateView,ClientUserDetailView,PermissionListCreateView,PermissionDetailView,GroupsDetailView,GroupsListCreateView,CompaniesListCreateView,CompanyDetailView
-# CompaniesViewset
+from .views import CaptchaViewset, OtpViewset,LoginViewset,ShareholdersTransactionsListCreateView,ShareholdersTransactionsDetailView,PositionGroupListCreateView,PositionListCreateView,EmployeePositionListCreateView,EmployeePositionDetailView,ShareholderListCreateView,ShareholderDetailView,ClientUserListCreateView,ClientUserDetailView,PermissionListCreateView,PermissionDetailView,GroupsDetailView,GroupsListCreateView,CompaniesListCreateView,CompanyDetailView
+
 
 urlpatterns = [
     path('captcha/', CaptchaViewset.as_view(), name='captcha'),
@@ -12,8 +12,6 @@ urlpatterns = [
     path('company/<int:pk>/',CompanyDetailView.as_view(), name='company'),
     path('employeeposition/',EmployeePositionListCreateView.as_view(), name='employeeposition'),
     path('employeeposition/<int:pk>/',EmployeePositionDetailView.as_view(), name='employeeposition'),
-    path('customer/', CustomerListCreateView.as_view(), name='customer'),
-    path('customer/<int:pk>/',CustomerDetailView.as_view(), name='customer'),
     path('user/', ClientUserListCreateView.as_view(), name='user'),
     path('user/<int:pk>/',ClientUserDetailView.as_view(), name='user'),
     path('shareholder/', ShareholderListCreateView.as_view(), name='shareholder'),
@@ -25,9 +23,8 @@ urlpatterns = [
     path('shareholderstransactions/',ShareholdersTransactionsListCreateView.as_view(), name='shareholderstransactions'),
     path('shareholderstransactions/<int:pk>/',ShareholdersTransactionsDetailView.as_view(), name='shareholderstransactions'),
 
+
 ]
-
-
 
 
 

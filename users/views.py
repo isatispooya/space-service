@@ -118,17 +118,6 @@ class EmployeePositionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.EmployeePositionModelSerializer
     permission_classes = [IsAuthenticated]
 
-# customer
-class CustomerListCreateView(generics.ListCreateAPIView):
-    queryset = models.Customer.objects.all()
-    serializer_class = serializers.CustomerSerializer
-    permission_classes = [IsAuthenticated]
-
-# customer
-class CustomerDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = models.Customer.objects.all()
-    serializer_class = serializers.CustomerSerializer
-    permission_classes = [IsAuthenticated]
 
 # shareholder
 class ShareholderListCreateView(generics.ListCreateAPIView):
@@ -204,11 +193,6 @@ class ShareholdersTransactionsDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ShareholdersTransactions.objects.all()
     serializer_class = serializers.ShareholdersTransactionsSerializer
     permission_classes = [IsAuthenticated]
-
-
-
- 
-
 
 
 

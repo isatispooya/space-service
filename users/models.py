@@ -2,7 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 from django.core.validators import RegexValidator
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser
+
 
 class Userpermissions (models.Model) :
     endpoint = models.CharField(max_length=150, unique=True)
@@ -81,13 +82,18 @@ class ClientUser(AbstractUser):
         help_text='Specific groups for this user.',
         verbose_name='groups')
     
-    user_permissions = models.ManyToManyField(
-        Userpermissions,
-        related_name='custom_user_permissions',
-        blank=True,
-        help_text='Specific permissions for this user.',
-        verbose_name='user permissions'
-    )
+    # user_permissions = models.ManyToManyField(
+    #     Userpermissions,
+    #     related_name='custom_user_permissions',
+    #     blank=True,
+    #     help_text='Specific permissions for this user.',
+    #     verbose_name='user permissions'
+    # )
+    def __str__(self):
+        username = self.username if self.username else "NoUsername"
+        national_code = self.national_code if self.national_code else "NoNationalCode"
+        return f'{username} {national_code}'
+    
 
 
 class Otp (models.Model) :
@@ -184,21 +190,6 @@ class Shareholder (models.Model):
 
 
 
-# Customer مشتریان
-class Customer (models.Model) :
-    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    create_at = models.DateTimeField(default=timezone.now) 
-
-    def __str__(self):
-        return f'{self.user} {self.company}'
-
-    class Meta:
-        # تعیین کلید یکتا برای ترکیب user و company
-        unique_together = ('user', 'company')
-
-
-
     
 # The priority of shareholders' transactions    اولویت معامله سهامدارن
 class ShareholdersTransactions (models.Model) :
@@ -213,3 +204,5 @@ class ShareholdersTransactions (models.Model) :
         return f'{self.seller} {self.buyer} {self.amount}'
 
   
+
+

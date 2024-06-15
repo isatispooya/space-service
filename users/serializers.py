@@ -40,6 +40,7 @@ class GroupsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class PositionModelSerializer(serializers.ModelSerializer):
     # group = PositionGroupModelSerializer()
     
@@ -92,13 +93,6 @@ class CompanyWithEmployeesSerializer(serializers.ModelSerializer):
     def get_employees(self, obj):
         employees = models.EmployeePosition.objects.filter(company=obj)
         return EmployeePositionModelSerializer(employees, many=True).data
-
-
-
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Customer
-        fields = '__all__'
 
 
 class ShareholderSerializer(serializers.ModelSerializer):   
