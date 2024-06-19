@@ -82,13 +82,7 @@ class ClientUser(AbstractUser):
         help_text='Specific groups for this user.',
         verbose_name='groups')
     
-    # user_permissions = models.ManyToManyField(
-    #     Userpermissions,
-    #     related_name='custom_user_permissions',
-    #     blank=True,
-    #     help_text='Specific permissions for this user.',
-    #     verbose_name='user permissions'
-    # )
+
     def __str__(self):
         username = self.username if self.username else "NoUsername"
         national_code = self.national_code if self.national_code else "NoNationalCode"

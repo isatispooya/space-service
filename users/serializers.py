@@ -40,20 +40,20 @@ class GroupsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PositionGroupModelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.PositionGroup
+        fields = '__all__'
 
 class PositionModelSerializer(serializers.ModelSerializer):
-    # group = PositionGroupModelSerializer()
+    group = serializers.PrimaryKeyRelatedField(queryset=models.PositionGroup.objects.all())
+
     
     class Meta:
         model = models.Position
         fields = '__all__'
 
-class PositionGroupModelSerializer(serializers.ModelSerializer):
-    group = PositionModelSerializer()
-
-    class Meta:
-        model = models.PositionGroup
-        fields = '__all__'
 
 
 class ClientUserModelSerializer(serializers.ModelSerializer):

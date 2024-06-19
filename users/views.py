@@ -136,11 +136,25 @@ class PositionListCreateView(generics.ListCreateAPIView):
     serializer_class = serializers.PositionModelSerializer
     permission_classes = [IsAuthenticated]
 
+# position
+class PositionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Position.objects.all()
+    serializer_class = serializers.PositionModelSerializer
+    permission_classes = [IsAuthenticated]
+
+
 # positiongroup
 class PositionGroupListCreateView(generics.ListCreateAPIView):
     queryset = models.PositionGroup.objects.all()
     serializer_class = serializers.PositionGroupModelSerializer
     permission_classes = [IsAuthenticated]
+
+# positiongroup
+class PositionGroupDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.PositionGroup.objects.all()
+    serializer_class = serializers.PositionGroupModelSerializer
+    permission_classes = [IsAuthenticated]
+
 
 # clientuser
 class ClientUserListCreateView(generics.ListCreateAPIView):

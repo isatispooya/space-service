@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CaptchaViewset, OtpViewset,LoginViewset,ShareholdersTransactionsListCreateView,ShareholdersTransactionsDetailView,PositionGroupListCreateView,PositionListCreateView,EmployeePositionListCreateView,EmployeePositionDetailView,ShareholderListCreateView,ShareholderDetailView,ClientUserListCreateView,ClientUserDetailView,PermissionListCreateView,PermissionDetailView,GroupsDetailView,GroupsListCreateView,CompaniesListCreateView,CompanyDetailView
+from .views import CaptchaViewset, OtpViewset,LoginViewset,ShareholdersTransactionsListCreateView,PositionDetailView,PositionGroupDetailView,ShareholdersTransactionsDetailView,PositionGroupListCreateView,PositionListCreateView,EmployeePositionListCreateView,EmployeePositionDetailView,ShareholderListCreateView,ShareholderDetailView,ClientUserListCreateView,ClientUserDetailView,PermissionListCreateView,PermissionDetailView,GroupsDetailView,GroupsListCreateView,CompaniesListCreateView,CompanyDetailView
 
 
 urlpatterns = [
@@ -7,7 +7,9 @@ urlpatterns = [
     path('otp/', OtpViewset.as_view(), name='otp'),
     path('login/', LoginViewset.as_view(), name='login'),
     path('position/',PositionListCreateView.as_view(), name='position'),
+    path('position/<int:pk>/',PositionDetailView.as_view(), name='position'),
     path('positiongroup/',PositionGroupListCreateView.as_view(), name='positiongroup'),
+    path('positiongroup/<int:pk>/',PositionGroupDetailView.as_view(), name='positiongroup'),
     path('company/',CompaniesListCreateView.as_view(), name='company'),
     path('company/<int:pk>/',CompanyDetailView.as_view(), name='company'),
     path('employeeposition/',EmployeePositionListCreateView.as_view(), name='employeeposition'),
