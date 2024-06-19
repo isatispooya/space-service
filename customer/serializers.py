@@ -16,3 +16,10 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = models.Customer
         fields = '__all__'
 
+
+
+class BrokerageTransactionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.BrokerageTransactions
+        fields = '__all__'
+

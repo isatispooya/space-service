@@ -34,3 +34,36 @@ class CustomerRemain (models.Model) :
         return f'{self.customer} {self.current_remain}'
 
   
+
+# Brokerage Transactions
+class BrokerageTransactions (models.Model) :
+    Index = models.CharField (max_length= 150)
+    AddedValueTax = models.IntegerField()
+    BondDividend = models.IntegerField()
+    BranchID = models.IntegerField()
+    BranchTitle = models.CharField (max_length= 150)
+    Discount = models.IntegerField()
+    InstrumentCategory = models.BooleanField()
+    MarketInstrumentISIN = models.CharField(max_length=150)
+    NetPrice = models.IntegerField()
+    Price = models.IntegerField ()
+    TotalCommission = models.IntegerField ()
+    TradeCode = models.IntegerField ()
+    TradeDate = models.DateTimeField()
+    TradeItemBroker = models.IntegerField ()
+    TradeItemRayanBourse = models.IntegerField ()
+    TradeNumber = models.IntegerField ()
+    TradeStationType = models.BooleanField()
+    TradeSymbol = models.CharField(max_length=200)
+    TradeType = models.CharField(max_length=150)
+    TransferTax = models.IntegerField ()
+    Volume = models.IntegerField ()
+    DateInt = models.IntegerField ()
+    Update = models.DateTimeField(default=timezone.now())
+    Name = models.CharField (max_length=200)
+    Fund = models.BooleanField()
+    Customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+
+    def __str__ (self) :
+        return f'{self.Customer}'
+

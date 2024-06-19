@@ -118,7 +118,6 @@ class EmployeePositionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.EmployeePositionModelSerializer
     permission_classes = [IsAuthenticated]
 
-
 # shareholder
 class ShareholderListCreateView(generics.ListCreateAPIView):
     queryset = models.Shareholder.objects.all()
@@ -155,7 +154,6 @@ class ClientUserDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.ClientUserModelSerializer
     permission_classes = [IsAuthenticated]
 
-
 # premission
 class PermissionListCreateView(generics.ListCreateAPIView):
     queryset = models.Userpermissions.objects.all()
@@ -179,8 +177,6 @@ class GroupsDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Groups.objects.all()
     serializer_class = serializers.GroupsSerializer
     permission_classes = [IsAuthenticated]
-
-
 
 # The priority of shareholders' transactions    اولویت معامله سهامدارن
 class ShareholdersTransactionsListCreateView(generics.ListCreateAPIView):
