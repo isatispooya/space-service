@@ -7,7 +7,7 @@ from users.models import ClientUser , Company
 
 
 
-# Customer مشتریان
+# Customer   مشتریان
 class Customer (models.Model) :
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
@@ -23,11 +23,20 @@ class Customer (models.Model) :
 
 # Customer Remain
 class CustomerRemain (models.Model) :
+
+    '''
+    adjusted_remain  مانده تعدیلی
+    blocked_remain مانده مسدود شده
+    credit  اعتبار
+    current_remain مانده فعلی 
+    customer
+
+    '''
     adjusted_remain = models.IntegerField () 
     blocked_remain =  models.IntegerField()
     credit = models.IntegerField()
     current_remain = models.IntegerField()
-    customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE ,  unique=True)
     datetime = models.DateTimeField(default=timezone.now)
 
     def __str__ (self) :
@@ -35,8 +44,36 @@ class CustomerRemain (models.Model) :
 
   
 
-# Brokerage Transactions
+# Brokerage Transactions     معاملات کارگزاری
 class BrokerageTransactions (models.Model) :
+    '''
+    Index
+    AddedValueTax
+    BondDividend
+    BranchID
+    BranchTitle
+    Discount
+    InstrumentCategory
+    MarketInstrumentISIN
+    NetPrice
+    Price
+    TotalCommission
+    TradeCode
+    TradeDate
+    TradeItemBroker
+    TradeItemRayanBourse
+    TradeNumber
+    TradeStationType
+    TradeSymbol
+    TradeType
+    TransferTax
+    Volume
+    DateInt
+    Update
+    Name
+    Fund
+    Customer
+    '''
     Index = models.CharField (max_length= 150)
     AddedValueTax = models.IntegerField()
     BondDividend = models.IntegerField()
