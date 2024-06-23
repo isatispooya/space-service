@@ -187,6 +187,14 @@ class Shareholder (models.Model):
     
 # The priority of shareholders' transactions    اولویت معامله سهامدارن
 class ShareholdersTransactions (models.Model) :
+    '''
+    seller => فروشنده
+    buyer => خریدار
+    count => تعداد
+    amount =>  مفدار
+    symbol => نماد
+
+    '''
     seller = models.ForeignKey(Shareholder,on_delete=models.CASCADE,related_name='transaction_seller')
     buyer = models.ForeignKey(Shareholder,on_delete=models.CASCADE,related_name='transaction_buyer')
     count = models.IntegerField()

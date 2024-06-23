@@ -25,11 +25,11 @@ class Customer (models.Model) :
 class CustomerRemain (models.Model) :
 
     '''
-    adjusted_remain  مانده تعدیلی
-    blocked_remain مانده مسدود شده
-    credit  اعتبار
-    current_remain مانده فعلی 
-    customer
+    adjusted_remain => مانده تعدیلی
+    blocked_remain => مانده مسدود شده
+    credit => اعتبار
+    current_remain => مانده فعلی 
+    customer => مشتری
 
     '''
     adjusted_remain = models.IntegerField () 
@@ -47,10 +47,10 @@ class CustomerRemain (models.Model) :
 # Brokerage Transactions     معاملات کارگزاری
 class BrokerageTransactions (models.Model) :
     '''
-    Index
+    Index 
     AddedValueTax
     BondDividend
-    BranchID
+    BranchID => کد شعبه
     BranchTitle
     Discount
     InstrumentCategory
@@ -58,7 +58,7 @@ class BrokerageTransactions (models.Model) :
     NetPrice
     Price
     TotalCommission
-    TradeCode
+    TradeCode => کد معاملاتی
     TradeDate
     TradeItemBroker
     TradeItemRayanBourse
@@ -67,12 +67,12 @@ class BrokerageTransactions (models.Model) :
     TradeSymbol
     TradeType
     TransferTax
-    Volume
+    Volume => حجم
     DateInt
-    Update
-    Name
-    Fund
-    Customer
+    Update => به روزرسانی
+    Name => نام
+    Fund => صندوق
+    Customer => مشتری
     '''
     Index = models.CharField (max_length= 150)
     AddedValueTax = models.IntegerField()
